@@ -5,12 +5,7 @@ using System.Text;
 
 namespace DataAccess.Abstract
 {
-    //Productla ilgili veritabanı operasyonları
-    public interface IProductDal : IEntityRepository<Product>
+    public interface ICustomerDal : IEntityRepository<Customer>
     {
-        
-
-
-
     }
 }
