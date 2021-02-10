@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -15,30 +17,54 @@ namespace Business.Concrete
 
         public ProductManager(IProductDal productDal)
         {
+            //İş Kodları
             _ProductDal = productDal;
         }
 
-        public List<Product> GetAll()
+        public IResult Add(Product product)
+        {
+            if (product.ProductName.Length<2)
+            {
+                //Magic strings
+                return new ErrorResult(Messages.ProductNameInvalid);
+            }
+
+            _ProductDal.Add(product);
+            return new Result(true,Messages.ProductAdded);
+        }
+
+        public IDataResult<List<Product>> GetAll()
+        {
+            if (DateTime.Now.Hour ==22)
+            {
+                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
+
+            }
+            return new SuccessDataResult<List<Product>>(_ProductDal.GetAll(),Messages.ProductsListed);
+
+        }
+
+        public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
             //İş Kodları
-            //İş kodlarını geçti
-            return _ProductDal.GetAll();
-
+            return new SuccessDataResult<List<Product>>(_ProductDal.GetAll(p => p.CategoryId == id));
         }
 
-        public List<Product> GetAllByCategoryId(int id)
+        public IDataResult<List<Product>> GetAllByUnitprice(decimal min, decimal max)
         {
-            return _ProductDal.GetAll(p=>p.CategoryId == id);
+            //İş Kodları
+            return new SuccessDataResult<List<Product>>(_ProductDal.GetAll(p => p.UnitPrice>= min && p.UnitPrice <= max));
         }
 
-        public List<Product> GetAllByUnitprice(decimal min, decimal max)
+        public IDataResult<Product> GetById(int productId)
         {
-            return _ProductDal.GetAll(p => p.UnitPrice>= min && p.UnitPrice <= max);
+            return new SuccessDataResult<Product>(_ProductDal.Get(p=>p.ProductId==productId));
         }
 
-        public List<ProductDetailDto> GetProductDetails()
+        public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            return _ProductDal.GetProductDetails();
+            //İş Kodları
+            return new SuccessDataResult<List<ProductDetailDto>>(_ProductDal.GetProductDetails());
         }
     }
 }

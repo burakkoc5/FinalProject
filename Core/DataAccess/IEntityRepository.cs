@@ -5,10 +5,8 @@ using System.Linq.Expressions;
 using System.Text;
 
 namespace Core.DataAccess
- //Core katmanı diğer katmanları ve projeleri referans almaz
+
 {
-    //generic constraint
-    //class : referans tip olabilir demek
     public interface IEntityRepository<T> where T:class,IEntity,new ()
     {
         List<T> GetAll(Expression<Func<T,bool>> filter = null);
