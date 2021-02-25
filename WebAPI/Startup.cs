@@ -33,8 +33,8 @@ namespace WebAPI
             //Autofac, Ninject, CastleWindsor, StructureMap, LightInhect, DryInject--->IoC Container
             services.AddControllers();
             //Sen biyerde IPS görürsen PM ver.Datasýz new lemeler için.
-            services.AddSingleton<IProductService,ProductManager>();
-            services.AddSingleton<IProductDal, EfProductDal>();
+            //services.AddSingleton<IProductService,ProductManager>();
+            //services.AddSingleton<IProductDal, EfProductDal>();
             //AddScopped,AddTransient datalý new lemeler için.
         }
 
