@@ -55,16 +55,11 @@ namespace Business.Concrete
         [CacheAspect] //key,value key = b.c.pm.getall
         public IDataResult<List<Product>> GetAll()
         {
-            if (DateTime.Now.Hour == 23)
-            {
-                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
-
-            }
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductsListed);
 
         }
 
-        //[CacheAspect]//key,value key = b.c.pm.getallbycategoryid(id)
+        [CacheAspect]//key,value key = b.c.pm.getallbycategoryid(id)
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
             //İş Kodları
@@ -132,7 +127,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [TransactionScopeAspect]
+        //[TransactionScopeAspect]
         public IResult AddTransactionalTest(Product product)
         {
             Add(product);
